@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İftara Ne Kadar Kaldı? - Ankara İftar Saati</title>
+    <meta name="description"
+        content="İftar ve sahur saatlerini analog saatle takip edin. Ramazan 2026 imsakiyesi ve güncel namaz vakitleri.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Amiri:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Decorative background elements -->
+    <div class="bg-decoration">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+        <div class="stars-container" id="starsContainer"></div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">☪</span>
+                <h1>İftara Ne Kadar Kaldı?</h1>
+            </div>
+            <div class="city-selector">
+                <label for="citySelect">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                    </svg>
+                </label>
+                <select id="citySelect">
+                    <option value="Ankara">Ankara</option>
+                    <option value="Istanbul">İstanbul</option>
+                    <option value="Izmir">İzmir</option>
+                    <option value="Bursa">Bursa</option>
+                    <option value="Antalya">Antalya</option>
+                    <option value="Adana">Adana</option>
+                    <option value="Konya">Konya</option>
+                    <option value="Gaziantep">Gaziantep</option>
+                    <option value="Diyarbakir">Diyarbakır</option>
+                    <option value="Kayseri">Kayseri</option>
+                    <option value="Samsun">Samsun</option>
+                    <option value="Trabzon">Trabzon</option>
+                    <option value="Erzurum">Erzurum</option>
+                    <option value="Malatya">Malatya</option>
+                    <option value="Eskisehir">Eskişehir</option>
+                    <option value="Sanliurfa">Şanlıurfa</option>
+                    <option value="Van">Van</option>
+                    <option value="Mersin">Mersin</option>
+                    <option value="Denizli">Denizli</option>
+                    <option value="Sivas">Sivas</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Current Date Info -->
+        <div class="date-info">
+            <span id="hijriDate" class="hijri-date">Ramazan 2026</span>
+            <span class="date-separator">•</span>
+            <span id="mildiDate" class="miladi-date"></span>
+        </div>
+
+        <!-- Main countdown section -->
+        <section class="countdown-section">
+            <div class="countdown-label-wrapper">
+                <h2 id="countdownLabel" class="countdown-label">İftara Kalan Süre</h2>
+                <div class="next-time-info">
+                    <span id="targetTimeName">Akşam (İftar)</span>
+                    <span id="targetTimeValue" class="target-time">--:--</span>
+                </div>
+            </div>
+
+            <div class="clock-and-timer">
+                <!-- Analog Clock -->
+                <div class="analog-clock-container">
+                    <svg id="analogClock" viewBox="0 0 400 400" class="analog-clock">
+                        <!-- Clock face background -->
+                        <defs>
+                            <radialGradient id="clockFaceGradient" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#0d0d1a;stop-opacity:1" />
+                            </radialGradient>
+                            <radialGradient id="clockRimGradient" cx="50%" cy="30%" r="60%">
+                                <stop offset="0%" style="stop-color:#4a3f6b;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:1" />
+                            </radialGradient>
+                            <filter id="clockGlow">
+                                <feGaussianBlur stdDeviation="3" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                            <filter id="handShadow">
+                                <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.5" />
+                            </filter>
+                            <filter id="secondHandGlow">
+                                <feGaussianBlur stdDeviation="2" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <!-- Outer ring -->
+                        <circle cx="200" cy="200" r="195" fill="none" stroke="url(#clockRimGradient)" stroke-width="3"
+                            opacity="0.6" />
+                        <circle cx="200" cy="200" r="190" fill="url(#clockFaceGradient)" stroke="rgba(255,255,255,0.08)"
+                            stroke-width="1" />
+
+                        <!-- Minute markers -->
+                        <g id="minuteMarkers" class="minute-markers"></g>
+
+                        <!-- Hour markers -->
+                        <g id="hourMarkers" class="hour-markers"></g>
+
+                        <!-- Hour numbers -->
+                        <g id="hourNumbers" class="hour-numbers"></g>
+
+                        <!-- Hour hand (akrep) -->
+                        <line id="hourHand" x1="200" y1="210" x2="200" y2="110" stroke="#e8d5b7" stroke-width="6"
+                            stroke-linecap="round" />
+                        <!-- Minute hand (yelkovan) -->
+                        <line id="minuteHand" x1="200" y1="215" x2="200" y2="70" stroke="#f0e6d3" stroke-width="4"
+                            stroke-linecap="round" />
+                        <!-- Second hand -->
+                        <line id="secondHand" x1="200" y1="230" x2="200" y2="50" stroke="#ff3333" stroke-width="2.5"
+                            stroke-linecap="round" />
+                        <!-- Center circle -->
+                        <circle cx="200" cy="200" r="9" fill="#ff4444" />
+                        <circle cx="200" cy="200" r="4.5" fill="#fff" />
+
+                        <!-- Iftar arc indicator -->
+                        <path id="iftarArc" class="iftar-arc" fill="none" stroke-width="4" stroke-linecap="round" />
+                    </svg>
+                    <div class="clock-city-label" id="clockCityLabel">Ankara</div>
+                </div>
+
+                <!-- Digital Countdown -->
+                <div class="digital-countdown">
+                    <div class="countdown-digits">
+                        <div class="digit-group">
+                            <div class="digit-value" id="countHours">--</div>
+                            <div class="digit-label">Saat</div>
+                        </div>
+                        <div class="digit-separator">:</div>
+                        <div class="digit-group">
+                            <div class="digit-value" id="countMinutes">--</div>
+                            <div class="digit-label">Dakika</div>
+                        </div>
+                        <div class="digit-separator">:</div>
+                        <div class="digit-group">
+                            <div class="digit-value" id="countSeconds">--</div>
+                            <div class="digit-label">Saniye</div>
+                        </div>
+                    </div>
+                    <!-- Progress bar -->
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span id="progressStart">İmsak</span>
+                        <span id="progressEnd">İftar</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prayer times section -->
+        <section class="prayer-times-section">
+            <h3 class="section-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                </svg>
+                Günlük Namaz Vakitleri
+            </h3>
+            <div class="prayer-times-grid" id="prayerTimesGrid">
+                <div class="prayer-card" data-prayer="Fajr">
+                    <div class="prayer-icon">🌙</div>
+                    <div class="prayer-name">İmsak</div>
+                    <div class="prayer-time" id="timeFajr">--:--</div>
+                </div>
+                <div class="prayer-card" data-prayer="Sunrise">
+                    <div class="prayer-icon">🌅</div>
+                    <div class="prayer-name">Güneş</div>
+                    <div class="prayer-time" id="timeSunrise">--:--</div>
+                </div>
+                <div class="prayer-card" data-prayer="Dhuhr">
+                    <div class="prayer-icon">☀️</div>
+                    <div class="prayer-name">Öğle</div>
+                    <div class="prayer-time" id="timeDhuhr">--:--</div>
+                </div>
+                <div class="prayer-card" data-prayer="Asr">
+                    <div class="prayer-icon">🌤️</div>
+                    <div class="prayer-name">İkindi</div>
+                    <div class="prayer-time" id="timeAsr">--:--</div>
+                </div>
+                <div class="prayer-card" data-prayer="Maghrib">
+                    <div class="prayer-icon">🌇</div>
+                    <div class="prayer-name">Akşam (İftar)</div>
+                    <div class="prayer-time" id="timeMaghrib">--:--</div>
+                </div>
+                <div class="prayer-card" data-prayer="Isha">
+                    <div class="prayer-icon">🌃</div>
+                    <div class="prayer-name">Yatsı</div>
+                    <div class="prayer-time" id="timeIsha">--:--</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ramadan info -->
+        <section class="ramadan-info-section">
+            <div class="ramadan-card">
+                <div class="ramadan-day" id="ramadanDay">
+                    <span class="day-number">--</span>
+                    <span class="day-label">. Gün</span>
+                </div>
+                <div class="ramadan-message" id="ramadanMessage">
+                    Ramazan-ı Şerif'iniz mübarek olsun 🌙
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 İftara Ne Kadar Kaldı | Namaz vakitleri <a href="https://aladhan.com" target="_blank">Aladhan API</a>
+            tarafından sağlanmaktadır.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
