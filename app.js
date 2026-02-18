@@ -70,7 +70,9 @@
         secondHand: document.getElementById('secondHand'),
         iftarArc: document.getElementById('iftarArc'),
         starsContainer: document.getElementById('starsContainer'),
-        prayerTimesGrid: document.getElementById('prayerTimesGrid')
+        prayerTimesGrid: document.getElementById('prayerTimesGrid'),
+        notifBtn: document.getElementById('notifBtn'),
+        notifBtnText: document.getElementById('notifBtnText')
     };
 
     // ============ Initialization ============
@@ -83,6 +85,7 @@
         loadCity();
 
         el.citySelect.addEventListener('change', onCityChange);
+        initNotifications();
     }
 
     // ============ Stars Background ============
@@ -497,10 +500,135 @@
         el.iftarArc.setAttribute('d', d);
     }
 
+    // ============ Notifications ============
+    let swRegistration = null;
+    let notificationsEnabled = localStorage.getItem('iftarNotif') === 'true';
+    let lastNotifiedTime = localStorage.getItem('lastNotifTime') || '';
+
+    async function initNotifications() {
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            try {
+                swRegistration = await navigator.serviceWorker.register('/sw.js');
+                console.log('Service Worker registered');
+            } catch (err) {
+                console.log('SW registration failed:', err);
+            }
+        }
+
+        // Update button state
+        updateNotifButton();
+
+        // Button click handler
+        el.notifBtn.addEventListener('click', async () => {
+            if (!('Notification' in window)) {
+                alert('Bu tarayıcı bildirimleri desteklemiyor.');
+                return;
+            }
+
+            if (notificationsEnabled) {
+                // Turn off
+                notificationsEnabled = false;
+                localStorage.setItem('iftarNotif', 'false');
+                updateNotifButton();
+                return;
+            }
+
+            // Request permission
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                notificationsEnabled = true;
+                localStorage.setItem('iftarNotif', 'true');
+                updateNotifButton();
+                // Show test notification
+                showNotification(
+                    'İftar Bildirimi Açıldı ✅',
+                    'İftar vakti geldiğinde bildirim alacaksınız.'
+                );
+            } else {
+                alert('Bildirim izni reddedildi. Lütfen tarayıcı ayarlarından izin verin.');
+            }
+        });
+    }
+
+    function updateNotifButton() {
+        if (notificationsEnabled) {
+            el.notifBtn.classList.add('active');
+            el.notifBtnText.textContent = 'Bildirim Açık';
+        } else {
+            el.notifBtn.classList.remove('active');
+            el.notifBtnText.textContent = 'Bildirim';
+        }
+    }
+
+    function showNotification(title, body) {
+        if (swRegistration) {
+            // Use Service Worker for better mobile support
+            swRegistration.active?.postMessage({
+                type: 'SHOW_NOTIFICATION',
+                title: title,
+                body: body
+            });
+        } else if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification(title, {
+                body: body,
+                icon: '/icon.svg',
+                vibrate: [200, 100, 200, 100, 200],
+                tag: 'iftar-notification'
+            });
+        }
+    }
+
+    function checkIftarNotification() {
+        if (!notificationsEnabled || !prayerTimes.Maghrib) return;
+
+        const now = new Date();
+        const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        const todayKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+
+        const iftarTime = prayerTimes.Maghrib;
+        const imsakTime = prayerTimes.Fajr;
+
+        // Iftar notification
+        if (currentTime === iftarTime && lastNotifiedTime !== `iftar-${todayKey}`) {
+            lastNotifiedTime = `iftar-${todayKey}`;
+            localStorage.setItem('lastNotifTime', lastNotifiedTime);
+            const cityName = CITY_DISPLAY[currentCity] || currentCity;
+            showNotification(
+                '🌙 İftar Vakti Geldi!',
+                `${cityName} için iftar vakti: ${iftarTime}. Hayırlı iftarlar! 🤲`
+            );
+        }
+
+        // Sahur/Imsak notification (10 min before)
+        const imsakParts = imsakTime.split(':');
+        let alertHour = parseInt(imsakParts[0]);
+        let alertMin = parseInt(imsakParts[1]) - 10;
+        if (alertMin < 0) { alertMin += 60; alertHour--; }
+        if (alertHour < 0) alertHour = 23;
+        const sahurAlert = `${alertHour.toString().padStart(2, '0')}:${alertMin.toString().padStart(2, '0')}`;
+
+        if (currentTime === sahurAlert && lastNotifiedTime !== `sahur-${todayKey}`) {
+            lastNotifiedTime = `sahur-${todayKey}`;
+            localStorage.setItem('lastNotifTime', lastNotifiedTime);
+            const cityName = CITY_DISPLAY[currentCity] || currentCity;
+            showNotification(
+                '⏰ Sahura 10 Dakika Kaldı!',
+                `${cityName} imsak vakti: ${imsakTime}. Sahur hazırlığınızı yapın!`
+            );
+        }
+    }
+
+    // Check every second during countdown
+    const originalStartCountdown = startCountdown;
+
     // ============ Start ============
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
     }
+
+    // Check notifications every minute
+    setInterval(checkIftarNotification, 30000);
 })();

@@ -110,20 +110,49 @@ body {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0) translateX(0); }
-    25% { transform: translateY(-30px) translateX(20px); }
-    50% { transform: translateY(10px) translateX(-15px); }
-    75% { transform: translateY(-20px) translateX(10px); }
+
+    0%,
+    100% {
+        transform: translateY(0) translateX(0);
+    }
+
+    25% {
+        transform: translateY(-30px) translateX(20px);
+    }
+
+    50% {
+        transform: translateY(10px) translateX(-15px);
+    }
+
+    75% {
+        transform: translateY(-20px) translateX(10px);
+    }
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 0.08; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 0.15; transform: translate(-50%, -50%) scale(1.2); }
+
+    0%,
+    100% {
+        opacity: 0.08;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    50% {
+        opacity: 0.15;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
 }
 
 @keyframes twinkle {
-    0%, 100% { opacity: 0.2; }
-    50% { opacity: 1; }
+
+    0%,
+    100% {
+        opacity: 0.2;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
 
 /* ============ Header ============ */
@@ -160,8 +189,15 @@ header {
 }
 
 @keyframes glowPulse {
-    0%, 100% { filter: drop-shadow(0 0 8px rgba(232, 195, 106, 0.4)); }
-    50% { filter: drop-shadow(0 0 16px rgba(232, 195, 106, 0.7)); }
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 8px rgba(232, 195, 106, 0.4));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 16px rgba(232, 195, 106, 0.7));
+    }
 }
 
 .logo h1 {
@@ -212,6 +248,63 @@ header {
     background: var(--bg-secondary);
     color: var(--text-primary);
     padding: 8px;
+}
+
+/* ============ Notification Button ============ */
+.notif-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    color: var(--text-secondary);
+    font-family: var(--font-main);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.notif-button:hover {
+    border-color: rgba(232, 195, 106, 0.3);
+    background: rgba(232, 195, 106, 0.05);
+    color: var(--accent-gold);
+}
+
+.notif-button.active {
+    border-color: rgba(46, 204, 113, 0.4);
+    background: rgba(46, 204, 113, 0.1);
+    color: var(--accent-green);
+}
+
+.notif-button.active svg {
+    animation: bellRing 2s ease-in-out infinite;
+}
+
+@keyframes bellRing {
+
+    0%,
+    100% {
+        transform: rotate(0);
+    }
+
+    10% {
+        transform: rotate(12deg);
+    }
+
+    20% {
+        transform: rotate(-10deg);
+    }
+
+    30% {
+        transform: rotate(6deg);
+    }
+
+    40% {
+        transform: rotate(0);
+    }
 }
 
 /* ============ Main Content ============ */
@@ -402,8 +495,15 @@ main {
 }
 
 @keyframes blink {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 0.1; }
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 0.1;
+    }
 }
 
 /* Progress bar */
@@ -619,14 +719,19 @@ footer a:hover {
 
 /* ============ Loading State ============ */
 .loading-shimmer {
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
 }
 
 @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
 }
 
 /* ============ Responsive ============ */
@@ -706,7 +811,7 @@ footer a:hover {
     .digit-value {
         font-size: 2rem;
     }
-    
+
     .digit-group {
         min-width: 50px;
     }
