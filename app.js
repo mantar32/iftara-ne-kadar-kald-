@@ -17,28 +17,29 @@
     };
     const PRAYER_ORDER = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
-    // Turkish city display names
     const CITY_DISPLAY = {
-        'Ankara': 'Ankara',
-        'Istanbul': 'İstanbul',
-        'Izmir': 'İzmir',
-        'Bursa': 'Bursa',
-        'Antalya': 'Antalya',
-        'Adana': 'Adana',
-        'Konya': 'Konya',
-        'Gaziantep': 'Gaziantep',
-        'Diyarbakir': 'Diyarbakır',
-        'Kayseri': 'Kayseri',
-        'Samsun': 'Samsun',
-        'Trabzon': 'Trabzon',
-        'Erzurum': 'Erzurum',
-        'Malatya': 'Malatya',
-        'Eskisehir': 'Eskişehir',
-        'Sanliurfa': 'Şanlıurfa',
-        'Van': 'Van',
-        'Mersin': 'Mersin',
-        'Denizli': 'Denizli',
-        'Sivas': 'Sivas'
+        'Adana': 'Adana', 'Adiyaman': 'Adıyaman', 'Afyonkarahisar': 'Afyonkarahisar',
+        'Agri': 'Ağrı', 'Aksaray': 'Aksaray', 'Amasya': 'Amasya', 'Ankara': 'Ankara',
+        'Antalya': 'Antalya', 'Ardahan': 'Ardahan', 'Artvin': 'Artvin', 'Aydin': 'Aydın',
+        'Balikesir': 'Balıkesir', 'Bartin': 'Bartın', 'Batman': 'Batman', 'Bayburt': 'Bayburt',
+        'Bilecik': 'Bilecik', 'Bingol': 'Bingöl', 'Bitlis': 'Bitlis', 'Bolu': 'Bolu',
+        'Burdur': 'Burdur', 'Bursa': 'Bursa', 'Canakkale': 'Çanakkale', 'Cankiri': 'Çankırı',
+        'Corum': 'Çorum', 'Denizli': 'Denizli', 'Diyarbakir': 'Diyarbakır', 'Duzce': 'Düzce',
+        'Edirne': 'Edirne', 'Elazig': 'Elazığ', 'Erzincan': 'Erzincan', 'Erzurum': 'Erzurum',
+        'Eskisehir': 'Eskişehir', 'Gaziantep': 'Gaziantep', 'Giresun': 'Giresun',
+        'Gumushane': 'Gümüşhane', 'Hakkari': 'Hakkari', 'Hatay': 'Hatay', 'Igdir': 'Iğdır',
+        'Isparta': 'Isparta', 'Istanbul': 'İstanbul', 'Izmir': 'İzmir',
+        'Kahramanmaras': 'Kahramanmaraş', 'Karabuk': 'Karabük', 'Karaman': 'Karaman',
+        'Kars': 'Kars', 'Kastamonu': 'Kastamonu', 'Kayseri': 'Kayseri', 'Kilis': 'Kilis',
+        'Kirikkale': 'Kırıkkale', 'Kirklareli': 'Kırklareli', 'Kirsehir': 'Kırşehir',
+        'Kocaeli': 'Kocaeli', 'Konya': 'Konya', 'Kutahya': 'Kütahya', 'Malatya': 'Malatya',
+        'Manisa': 'Manisa', 'Mardin': 'Mardin', 'Mersin': 'Mersin', 'Mugla': 'Muğla',
+        'Mus': 'Muş', 'Nevsehir': 'Nevşehir', 'Nigde': 'Niğde', 'Ordu': 'Ordu',
+        'Osmaniye': 'Osmaniye', 'Rize': 'Rize', 'Sakarya': 'Sakarya', 'Samsun': 'Samsun',
+        'Sanliurfa': 'Şanlıurfa', 'Siirt': 'Siirt', 'Sinop': 'Sinop', 'Sirnak': 'Şırnak',
+        'Sivas': 'Sivas', 'Tekirdag': 'Tekirdağ', 'Tokat': 'Tokat', 'Trabzon': 'Trabzon',
+        'Tunceli': 'Tunceli', 'Usak': 'Uşak', 'Van': 'Van', 'Yalova': 'Yalova',
+        'Yozgat': 'Yozgat', 'Zonguldak': 'Zonguldak'
     };
 
     // ============ State ============
