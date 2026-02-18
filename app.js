@@ -264,7 +264,7 @@
                 const daysUntil = Math.abs(diffFromStart);
                 el.ramadanDay.querySelector('.day-number').textContent = daysUntil;
                 el.ramadanDay.querySelector('.day-label').textContent = 'gün kaldı';
-                el.ramadanMessage.textContent = `Ramazan-ı Şerif'e ${daysUntil} gün kaldı. Hazırlıklarınızı yapın 🌙`;
+                el.ramadanMessage.textContent = `"Ramazan ayı yaklaşıyor, kalplerinizi ve niyetlerinizi hazırlayın." 🌙`;
             } else if (diffFromStart < 30) {
                 // During Ramadan
                 const dayNum = diffFromStart + 1;
@@ -293,13 +293,42 @@
 
     function getRamadanMessage(day) {
         const messages = [
-            'Ramazan-ı Şerif\'iniz mübarek olsun 🌙',
-            'Hayırlı Ramazanlar, dualarınız kabul olsun 🤲',
-            'Bu mübarek ayda tüm dualarınız kabul olsun 🤲',
-            'Ramazan bereketi üzerinize olsun 🌙',
-            'Sabır ve şükürle dolu bir Ramazan geçirin ✨'
+            '', // placeholder for index 0
+            '"Ramazan, Kur\'an\'ın indirildiği aydır." — Bakara Suresi 🌙',
+            '"Oruç sizden öncekilere farz kılındığı gibi sizin üzerinize de farz kılındı." — Bakara Suresi 📖',
+            '"Sabredin, çünkü Allah sabredenlerle beraberdir." — Enfal Suresi 🤲',
+            '"Kim Ramazan\'da inanarak ve sevabını umarak oruç tutarsa, geçmiş günahları bağışlanır." — Hz. Muhammed (s.a.v.) ✨',
+            '"Oruçlu kimsenin ağız kokusu, Allah katında misk kokusundan daha güzeldir." — Hz. Muhammed (s.a.v.) 🌹',
+            '"Oruç bir kalkandır; biriniz oruçlu olduğu gün kötü söz söylemesin." — Hz. Muhammed (s.a.v.) 🛡️',
+            '"Rabbinize dua edin, şüphesiz O duaları kabul eder." — Mü\'min Suresi 🤲',
+            '"Kim bir oruçluya iftar ettirirse, oruçlunun sevabı kadar sevap kazanır." — Hz. Muhammed (s.a.v.) 🍽️',
+            '"Allah\'ın rahmetinden ümidinizi kesmeyin." — Zümer Suresi 💚',
+            '"Şüphesiz her zorluğun yanında bir kolaylık vardır." — İnşirah Suresi 🌅',
+            '"Ramazan geldiğinde cennet kapıları açılır, cehennem kapıları kapanır." — Hz. Muhammed (s.a.v.) 🌙',
+            '"Sabır, imanın yarısıdır." — Hz. Muhammed (s.a.v.) 💎',
+            '"En hayırlınız, Kur\'an\'ı öğrenen ve öğretendir." — Hz. Muhammed (s.a.v.) 📖',
+            '"Bir iyiliğe vesile olan, onu yapan gibidir." — Hz. Muhammed (s.a.v.) 🤝',
+            '"Kadir gecesi bin aydan hayırlıdır." — Kadir Suresi ✨',
+            '"Komşusu aç iken tok yatan bizden değildir." — Hz. Muhammed (s.a.v.) ❤️',
+            '"Güzel söz sadakadır." — Hz. Muhammed (s.a.v.) 🌸',
+            '"Allah\'ı çok zikredin ki kurtuluşa eresiniz." — Cuma Suresi 📿',
+            '"Kim Allah\'a tevekkül ederse, O kendisine yeter." — Talak Suresi 🤲',
+            '"İnsanların en hayırlısı, insanlara faydalı olandır." — Hz. Muhammed (s.a.v.) 🌟',
+            '"Merhamet etmeyene merhamet olunmaz." — Hz. Muhammed (s.a.v.) 💞',
+            '"Kolaylaştırınız, zorlaştırmayınız; müjdeleyiniz, nefret ettirmeyiniz." — Hz. Muhammed (s.a.v.) 🌈',
+            '"Şüphesiz Allah, tövbe edenleri sever." — Bakara Suresi 🕊️',
+            '"Dünya ahiretin tarlasıdır." — Hz. Muhammed (s.a.v.) 🌾',
+            '"İlim Çin\'de bile olsa gidip alınız." — Hz. Muhammed (s.a.v.) 📚',
+            '"Tefekkür ibadetin en faziletlisidir." — Hz. Muhammed (s.a.v.) 💭',
+            '"Son on günde Kadir Gecesi\'ni arayınız." — Hz. Muhammed (s.a.v.) 🌙',
+            '"Güleryüzlü olmak sadakadır." — Hz. Muhammed (s.a.v.) 😊',
+            '"Şükredenlere nimetimi artırırım." — İbrahim Suresi 🙏',
+            '"Elveda ey Ramazan! Seni özleyeceğiz." — Ramazan\'a veda 🌙💫'
         ];
-        return messages[day % messages.length];
+        if (day >= 1 && day <= 30) {
+            return messages[day];
+        }
+        return 'Ramazan-ı Şerif\'iniz mübarek olsun 🌙';
     }
 
     // ============ Display Updates ============
