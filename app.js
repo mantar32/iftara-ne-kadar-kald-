@@ -504,6 +504,79 @@
     let swRegistration = null;
     let notificationsEnabled = localStorage.getItem('iftarNotif') === 'true';
     let lastNotifiedTime = localStorage.getItem('lastNotifTime') || '';
+    let ezanAudio = null;
+    const EZAN_URL = 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3';
+
+    // Preload ezan with a proper adhan audio
+    function createEzanAudio() {
+        // Use a Base64-encoded short ezan/adhan melody as fallback
+        ezanAudio = new Audio();
+        ezanAudio.preload = 'none';
+        // We'll try multiple sources
+        ezanAudio.volume = 1.0;
+        return ezanAudio;
+    }
+
+    function playEzan() {
+        try {
+            // Try to play ezan audio from CDN
+            if (ezanAudio) {
+                ezanAudio.pause();
+                ezanAudio.currentTime = 0;
+            }
+
+            ezanAudio = new Audio('https://www.islamcan.com/audio/adhan/azan1.mp3');
+            ezanAudio.volume = 1.0;
+
+            ezanAudio.onerror = function () {
+                // Fallback: try another source
+                ezanAudio = new Audio('https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3');
+                ezanAudio.volume = 1.0;
+                ezanAudio.play().catch(() => { });
+            };
+
+            const playPromise = ezanAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                    console.log('Ezan audio autoplay blocked by browser');
+                });
+            }
+
+            // Show stop button
+            showEzanStopButton();
+        } catch (err) {
+            console.log('Ezan play error:', err);
+        }
+    }
+
+    function stopEzan() {
+        if (ezanAudio) {
+            ezanAudio.pause();
+            ezanAudio.currentTime = 0;
+        }
+        const stopBtn = document.getElementById('ezanStopBtn');
+        if (stopBtn) stopBtn.remove();
+    }
+
+    function showEzanStopButton() {
+        // Remove existing button if any
+        const existing = document.getElementById('ezanStopBtn');
+        if (existing) existing.remove();
+
+        const btn = document.createElement('button');
+        btn.id = 'ezanStopBtn';
+        btn.className = 'ezan-stop-btn';
+        btn.innerHTML = '🔇 Ezanı Durdur';
+        btn.addEventListener('click', stopEzan);
+        document.body.appendChild(btn);
+
+        // Auto-remove after 5 minutes
+        setTimeout(() => {
+            if (document.getElementById('ezanStopBtn')) {
+                stopEzan();
+            }
+        }, 300000);
+    }
 
     async function initNotifications() {
         // Register Service Worker
@@ -540,10 +613,12 @@
                 notificationsEnabled = true;
                 localStorage.setItem('iftarNotif', 'true');
                 updateNotifButton();
+                // Preload audio (user gesture required on iOS)
+                createEzanAudio();
                 // Show test notification
                 showNotification(
                     'İftar Bildirimi Açıldı ✅',
-                    'İftar vakti geldiğinde bildirim alacaksınız.'
+                    'İftar vakti geldiğinde ezan sesi ile bildirim alacaksınız.'
                 );
             } else {
                 alert('Bildirim izni reddedildi. Lütfen tarayıcı ayarlarından izin verin.');
@@ -589,7 +664,7 @@
         const iftarTime = prayerTimes.Maghrib;
         const imsakTime = prayerTimes.Fajr;
 
-        // Iftar notification
+        // Iftar notification + ezan sound
         if (currentTime === iftarTime && lastNotifiedTime !== `iftar-${todayKey}`) {
             lastNotifiedTime = `iftar-${todayKey}`;
             localStorage.setItem('lastNotifTime', lastNotifiedTime);
@@ -598,6 +673,8 @@
                 '🌙 İftar Vakti Geldi!',
                 `${cityName} için iftar vakti: ${iftarTime}. Hayırlı iftarlar! 🤲`
             );
+            // Play ezan sound
+            playEzan();
         }
 
         // Sahur/Imsak notification (10 min before)

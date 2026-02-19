@@ -307,6 +307,44 @@ header {
     }
 }
 
+/* ============ Ezan Stop Button ============ */
+.ezan-stop-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 28px;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(231, 76, 60, 0.5);
+    animation: ezanPulse 1.5s ease-in-out infinite;
+    transition: all 0.3s ease;
+}
+
+.ezan-stop-btn:hover {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 6px 30px rgba(231, 76, 60, 0.7);
+}
+
+@keyframes ezanPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 4px 20px rgba(231, 76, 60, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 4px 30px rgba(231, 76, 60, 0.8);
+    }
+}
+
 /* ============ Main Content ============ */
 main {
     position: relative;
